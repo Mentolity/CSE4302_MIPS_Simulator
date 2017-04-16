@@ -28,7 +28,6 @@ public class ProgramParser {
 			String rd = null;
 			String IMM = null;
 			
-
 			String[] tabs = currentLine.split("	");//Split line based on tab
 			for(String s : tabs){
 				String[] spaces = s.split(" ");//split line based on space
@@ -52,7 +51,6 @@ public class ProgramParser {
 							IMM = p;
 						}
 					}
-
 					//System.out.println(p);
 				}
 			}

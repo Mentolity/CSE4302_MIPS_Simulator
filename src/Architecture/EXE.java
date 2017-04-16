@@ -2,11 +2,16 @@ package Architecture;
 
 import Architecture.ID.IDWrapper;
 
-public class EXE {
-	int dependentRegister;
-	int dependentRegisterValue;
-	
+public class EXE {	
+	int[] registers;
+	IDWrapper idWrapper;
+	int exeValue;
+	public EXE(int[] regs) {
+		registers = regs;
+	}
+
 	public void execute(IDWrapper w) {
+		idWrapper = w;
 		if(w == null)
 			return;
 		//____________________________________________________________
@@ -14,76 +19,65 @@ public class EXE {
 			return;
 		//____________________________________________________________
 		if(w.operation.equalsIgnoreCase("nop")){
-			return;
+			return; //no operation
 		}
 		//____________________________________________________________
 		if(w.operation.equalsIgnoreCase("lw")){
-			
-		}
+			exeValue = (registers[w.reg3] - 0x1000) + (w.imm/4);		//for lw/sw subtract 0x1000 to get to beginning of memory 
+		}																//divide the immediate by 4 to get integer index
 		//____________________________________________________________
 		if(w.operation.equalsIgnoreCase("sw")){
-			
+			exeValue = (registers[w.reg3] - 0x1000) + (w.imm/4);
 		}
 		//____________________________________________________________
 		if(w.operation.equalsIgnoreCase("add")){
-			if(w.reg2 == dependentRegister){
-				w.rs = dependentRegisterValue + w.rd;
-			}else if(w.reg3 == dependentRegister){
-				w.rs = w.rt + dependentRegisterValue;
-			}else{
-				w.rs = w.rt + w.rd;
-			}
+			exeValue = registers[w.reg2] + registers[w.reg3];
 		}
 		//____________________________________________________________
 		if(w.operation.equalsIgnoreCase("sub")){
-			if(w.reg2 == dependentRegister){
-				w.rs = dependentRegisterValue - w.rd;
-			}else if(w.reg3 == dependentRegister){
-				w.rs = w.rt - dependentRegisterValue;
-			}else{
-				w.rs = w.rt - w.rd;
-			}
+			exeValue = registers[w.reg2] - registers[w.reg3];
 		}
 		//____________________________________________________________
 		if(w.operation.equalsIgnoreCase("addi")){
-			if(w.reg2 == dependentRegister){
-				w.rs = dependentRegisterValue + w.imm;
-			}else{
-				w.rs = w.rt + w.imm;
-			}
+			exeValue = registers[w.reg2] + w.imm;
 		}
 		//____________________________________________________________
 		if(w.operation.equalsIgnoreCase("bne")){
-			
+			return; //resolved in the ID stage
 		}
 		//____________________________________________________________
 		if(w.operation.equalsIgnoreCase("beq")){
-			
+			return; //resolved in the ID stage
 		}
 		//____________________________________________________________
 		if(w.operation.equalsIgnoreCase("and")){
-			
+			exeValue = registers[w.reg2] & registers[w.reg3];
 		}
 		//____________________________________________________________
 		if(w.operation.equalsIgnoreCase("or")){
-			
+			exeValue = registers[w.reg2] | registers[w.reg3];
 		}
 		//____________________________________________________________
 		if(w.operation.equalsIgnoreCase("nor")){
-			
+			exeValue = ~(registers[w.reg2] | registers[w.reg3]);
 		}
 		//____________________________________________________________
 		if(w.operation.equalsIgnoreCase("xor")){
-			
+			exeValue = registers[w.reg2] ^ registers[w.reg3];
 		}
-		//____________________________________________________________
-		
-		dependentRegister = w.reg1;
-		dependentRegister = w.rs;
-		
+		//____________________________________________________________	
 	}
-
-	public int dependentRegister() {
-		return dependentRegister;
+	
+	public EXEWrapper getEXEWrapper(){
+		return new EXEWrapper(exeValue, idWrapper);
+	}
+	
+	public class EXEWrapper{
+		public int exeValue;
+		public IDWrapper idWrapper;
+		public EXEWrapper(int wbVal, IDWrapper w){
+			exeValue = wbVal;
+			idWrapper = w;
+		}
 	}
 }
