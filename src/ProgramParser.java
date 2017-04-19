@@ -66,6 +66,16 @@ public class ProgramParser {
 			
 			//System.out.println("_____________________");
 		}
+		cleanInstructionList(); //remove null OPs from instructions
+	}
+	
+	public void cleanInstructionList(){
+		for(int i=0; i<instructions.size(); i++){
+			if(instructions.get(i).getInstructionName() == null && instructions.get(i).getLabel() == null){
+				instructions.remove(i);
+				i--; //since size of list has decreased by one go back a position as to not miss it
+			}
+		}
 	}
 	
 	public Instruction getInstructionAt(int i){
