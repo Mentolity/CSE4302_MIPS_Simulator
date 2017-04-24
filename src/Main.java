@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Scanner;
 
 public class Main {
@@ -5,8 +6,21 @@ public class Main {
 	
 	public static void main(String[] args){
 		String input;
+		String path;
+		Simulator s;
 		int numberOfSteps;
-		Simulator s = new Simulator("./res/input.txt");
+		while(true){
+			try{
+				System.out.print("Input file path: ");
+				path = sc.nextLine();
+				s = new Simulator(path);
+				System.out.println("");
+				break;
+			}catch(Exception e){
+				//try again
+			}
+		}
+		
 		
 		while(true){
 			numberOfSteps = 0;

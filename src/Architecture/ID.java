@@ -221,12 +221,14 @@ public class ID {
 	
 	private void setBranchAddress(int register1, int register2){
 		if(operation.equals("bne")){
-			if(register1 != register2)
+			if(register1 != register2){
 				branchAddress = imm; //if branch is taken set branchAddress to the new PC
+			}
 		}
 		if(operation.equals("beq")){
-			if(register1 == register2)
+			if(register1 == register2){
 				branchAddress = imm;
+			}
 		}
 	}
 	

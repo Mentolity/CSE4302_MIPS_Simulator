@@ -13,12 +13,9 @@ public class ProgramParser {
 	Scanner sc;
 	String currentLine;
 	
-	public ProgramParser(String inputFile){
-		try{
-			sc = new Scanner(new File(inputFile));
-		}catch(FileNotFoundException e){
-			e.printStackTrace();
-		}
+	public ProgramParser(String inputFile) throws FileNotFoundException{
+		sc = new Scanner(new File(inputFile));
+		
 		while(sc.hasNext()){
 			currentLine = sc.nextLine();
 			String label = null;
@@ -31,6 +28,8 @@ public class ProgramParser {
 			String[] tabs = currentLine.split("	");//Split line based on tab
 			for(String s : tabs){
 				String[] spaces = s.split(" ");//split line based on space
+				if(s.contains("#"))
+					break;
 				for(String p : spaces){
 					if(p.contains("#"))
 						break;

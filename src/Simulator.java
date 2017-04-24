@@ -2,6 +2,7 @@ import Architecture.IF;
 import Architecture.ID;
 import Architecture.ID.IDWrapper;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import Architecture.EXE;
@@ -31,7 +32,7 @@ public class Simulator {
 	int numberOfNOPs = 0;
 	
  	
-	public Simulator(String input){
+	public Simulator(String input) throws FileNotFoundException{
 		pp = new ProgramParser(input);
 		pp.debug();
 		IF = new IF(pp.getInstructions());
@@ -80,6 +81,7 @@ public class Simulator {
 			if(branchPC != -1){ //if valid branch was taken update PC
 				pc = branchPC;
 				instruction = IF.getNOPInstruction(); //since we assume the branch isn't taken but it was taken flush the IF stage in pipeline
+				System.out.println("Branch taken.");
 			}
 		}
 
